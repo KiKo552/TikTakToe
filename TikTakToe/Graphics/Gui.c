@@ -1,26 +1,30 @@
+#include <stdio.h>
 #include <windows.h>
 #include "GSettings.h"
 
 /*Sub-procedures*/ 
 // Handling the button input
 void HandleButtonPress(HWND hwnd, WPARAM wParam) {
-    if (LOWORD(wParam) == 1) {
-        MessageBox(hwnd, "Input received !", "Success", MB_OK);
+    int buttonID = LOWORD(wParam);              // Getting the ID of the clicked button -_-
+    printf("Button %d was pressed!\n", buttonID);
+
+    HWND hButton = GetDlgItem(hwnd, buttonID);  // Making sure that the button exists
+    if (hButton) {
+        SetWindowText(hButton, L"A");
     }
 }
 
 // Window procedure (callback function)
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
-        case WM_CREATE:
+        case WM_COMMAND:
             HandleButtonPress(hwnd, wParam);
             return 0;
-        case WM_CLOSE:              // when the window is closed (by the user :P)
-            DestroyWindow(hwnd);    // destroy the window COMPLETELY ⚡⚡
+        case WM_CLOSE:                        // when the window is closed (by the user :P)
+            DestroyWindow(hwnd);             // destroy the window COMPLETELY ⚡⚡
             return 0;
-
-        case WM_DESTROY:            // when the window is destroyed
-            PostQuitMessage(0);     // tell Windows we're done :P
+        case WM_DESTROY:                     // when the window is destroyed
+            PostQuitMessage(0);             // tell Windows we're done :P
             return 0;
 
         default:
@@ -40,7 +44,7 @@ HWND CreateMainWindow(HINSTANCE hInstance, int nCmdShow) {
     wc.hIcon            = LoadIcon(NULL, IDI_APPLICATION);  // ig the icon of the window
     wc.hCursor          = LoadCursor(NULL, IDC_ARROW);      // cursor of the window
     wc.hbrBackground    = (HBRUSH)(COLOR_WINDOW + 1);       // the background color of the window
-    wc.lpszClassName    = WINDOW_CLASS;                     // name of the window class (referenced in the settings)
+    wc.lpszClassName    = "TClass";                         // name of the window class (referenced in the settings)
     wc.hIconSm          = LoadIcon(NULL, IDI_APPLICATION);  // that silly lil icon of the window :P
 
     // we send them to the gulac if it's missbehaving
@@ -51,7 +55,7 @@ HWND CreateMainWindow(HINSTANCE hInstance, int nCmdShow) {
 
     HWND hwind = CreateWindowEx(
         WINDOW_EX_STYLE,
-        WINDOW_CLASS,
+        "TClass",
         WINDOW_TITLE,
         WINDOW_STYLE,
         CW_USEDEFAULT, CW_USEDEFAULT,
@@ -68,7 +72,8 @@ HWND CreateMainWindow(HINSTANCE hInstance, int nCmdShow) {
 }
 
 // Create a function to make a button (just to simplify the process of making buttons)
-HWND CreateButton(HWND hwndParent, HINSTANCE hInstance, int ID_BUTTON, int x, int y, int w, int h, const wchar_t* text) {
+HWND CreateButton(HWND hwndParent, HINSTANCE hInstance, int ID_BUTTON, int x, int y, int w, int h, LPCSTR text) {
+    if (!text) { text = "0"; };
     DWORD style = WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON;
     
     HWND hButton = CreateWindow(
@@ -81,7 +86,7 @@ HWND CreateButton(HWND hwndParent, HINSTANCE hInstance, int ID_BUTTON, int x, in
         hInstance,
         NULL
     );
-    
+
     return hButton;
 }
 
@@ -91,17 +96,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     HWND hwind = CreateMainWindow(hInstance, nCmdShow);
     if (!hwind) return 0;
 
-    HWND B0 = CreateButton(hwind, hInstance, 1, 100, 100, 100, 100, "");
-    HWND B1 = CreateButton(hwind, hInstance, 1, 200, 100, 100, 100, "");
-    HWND B2 = CreateButton(hwind, hInstance, 1, 300, 100, 100, 100, "");
-    
-    HWND B3 = CreateButton(hwind, hInstance, 1, 100, 200, 100, 100, "");
-    HWND B4 = CreateButton(hwind, hInstance, 1, 200, 200, 100, 100, "");
-    HWND B5 = CreateButton(hwind, hInstance, 1, 300, 200, 100, 100, "");
-    
-    HWND B6 = CreateButton(hwind, hInstance, 1, 100, 300, 100, 100, "");
-    HWND B7 = CreateButton(hwind, hInstance, 1, 200, 300, 100, 100, "");
-    HWND B8 = CreateButton(hwind, hInstance, 1, 300, 300, 100, 100, "");
+    HWND B0 = CreateButton(hwind, hInstance, 1, 100, 100, 100, 100, L"X");
+    HWND B1 = CreateButton(hwind, hInstance, 2, 200, 100, 100, 100, L"O");
+    HWND B2 = CreateButton(hwind, hInstance, 3, 300, 100, 100, 100, L"X");
+
+    HWND B3 = CreateButton(hwind, hInstance, 4, 100, 200, 100, 100, L"O");
+    HWND B4 = CreateButton(hwind, hInstance, 5, 200, 200, 100, 100, L"X");
+    HWND B5 = CreateButton(hwind, hInstance, 6, 300, 200, 100, 100, L"O");
+
+    HWND B6 = CreateButton(hwind, hInstance, 7, 100, 300, 100, 100, L"X");
+    HWND B7 = CreateButton(hwind, hInstance, 8, 200, 300, 100, 100, L"O");
+    HWND B8 = CreateButton(hwind, hInstance, 9, 300, 300, 100, 100, L"O");
     
     MSG msg = {0};
     while (GetMessage(&msg, NULL, 0, 0) > 0) {
