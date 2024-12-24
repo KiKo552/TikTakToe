@@ -6,7 +6,6 @@
     #define WINDOW_HEIGHT   500
 
     // Window properties :P
-    #define WINDOW_CLASS    "TClass"
     #define WINDOW_TITLE    "TikTakToe"
 
     // Window styles 😎
