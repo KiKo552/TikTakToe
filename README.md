@@ -1,9 +1,7 @@
-# TikTakToe *[in construction]*
+# A basic tiktaktoe I made with only C
 Hello! This project is my way of diving deeper into C programming while having some fun :P.
-Currently it isn't completed yet as the game logic hadn't been started yet and the interface is... meh to say the least.
-Also it's only windows support as I'm using Win32, I have my complaints with that api but I couldn't find a better substitude for now.
-
-*stay tuned for more updates**
+Although the gui isn't 'stylish' and some functionalities have not been implemented yet, the game is functional to say the least :P 
+Also it's only windows support as I've only been using Win32, I have my complaints with that api but I couldn't find a better substitude for now.
 
 # Usage
-- Just run the `Gui.c` (or it's execution)
+- Just run the `Gui.c` code (or it's execution)
